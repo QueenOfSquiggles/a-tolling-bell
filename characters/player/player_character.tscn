@@ -1,0 +1,40 @@
+[gd_scene load_steps=7 format=3 uid="uid://dc3s511ix25ru"]
+
+[ext_resource type="Script" path="res://characters/player/player_character.gd" id="1_6irkd"]
+[ext_resource type="Script" path="res://characters/player/fsm/walking.gd" id="2_g8l64"]
+[ext_resource type="Script" path="res://characters/player/fsm/cutscene.gd" id="3_s44ap"]
+[ext_resource type="Script" path="res://characters/player/fsm/sprinting.gd" id="4_ycbui"]
+[ext_resource type="Script" path="res://characters/player/fsm/crouching.gd" id="5_srcwe"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_po2el"]
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("1_6irkd")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_po2el")
+
+[node name="VirtualCamera3D" type="VirtualCamera3D" parent="."]
+use_lerp = false
+push_on_ready = false
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.659345, 0)
+
+[node name="InteractRaycast3D" type="InteractRaycast3D" parent="VirtualCamera3D"]
+target_position = Vector3(0, 0, -2)
+
+[node name="FiniteStateMachine" type="FiniteStateMachine" parent="." node_paths=PackedStringArray("current")]
+current = NodePath("walking")
+
+[node name="walking" type="FiniteState" parent="FiniteStateMachine" node_paths=PackedStringArray("actor", "camera")]
+script = ExtResource("2_g8l64")
+actor = NodePath("../..")
+camera = NodePath("../../VirtualCamera3D")
+
+[node name="cutscene" type="FiniteState" parent="FiniteStateMachine"]
+script = ExtResource("3_s44ap")
+
+[node name="sprinting" type="FiniteState" parent="FiniteStateMachine"]
+script = ExtResource("4_ycbui")
+
+[node name="crouching" type="FiniteState" parent="FiniteStateMachine"]
+script = ExtResource("5_srcwe")
