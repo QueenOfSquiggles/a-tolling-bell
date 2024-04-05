@@ -6,6 +6,6 @@ func on_enter() -> void:
 func on_exit() -> void:
 	pass
 
-func tick() -> void:
+func tick(delta: float) -> void:
 	pass
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://dc3s511ix25ru"]
+[gd_scene load_steps=9 format=3 uid="uid://dc3s511ix25ru"]
 
 [ext_resource type="Script" path="res://characters/player/player_character.gd" id="1_6irkd"]
 [ext_resource type="Script" path="res://characters/player/fsm/walking.gd" id="2_g8l64"]
@@ -8,15 +8,22 @@
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_po2el"]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xl1qi"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_exw07"]
+
 [node name="Player" type="CharacterBody3D"]
 script = ExtResource("1_6irkd")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_po2el")
 
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+material_override = SubResource("StandardMaterial3D_xl1qi")
+mesh = SubResource("CapsuleMesh_exw07")
+
 [node name="VirtualCamera3D" type="VirtualCamera3D" parent="."]
 use_lerp = false
-push_on_ready = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.659345, 0)
 
 [node name="InteractRaycast3D" type="InteractRaycast3D" parent="VirtualCamera3D"]
