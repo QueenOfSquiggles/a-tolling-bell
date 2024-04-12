@@ -1,0 +1,53 @@
+[gd_scene load_steps=4 format=3 uid="uid://bhgy8fnjnkrhu"]
+
+[ext_resource type="Script" path="res://scenes/level/elements/door.gd" id="1_sco2b"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_avhc6"]
+size = Vector3(1, 2, 0.1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0xt32"]
+size = Vector3(0.9, 2, 0.1)
+
+[node name="DoubleDoors" type="Node3D"]
+
+[node name="door" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 0)
+input_ray_pickable = false
+axis_lock_linear_x = true
+axis_lock_linear_y = true
+axis_lock_linear_z = true
+axis_lock_angular_x = true
+axis_lock_angular_z = true
+mass = 36.2
+center_of_mass_mode = 1
+script = ExtResource("1_sco2b")
+push_force = 6.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="door"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0)
+mesh = SubResource("BoxMesh_avhc6")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="door"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0)
+shape = SubResource("BoxShape3D_0xt32")
+
+[node name="door2" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0)
+input_ray_pickable = false
+axis_lock_linear_x = true
+axis_lock_linear_y = true
+axis_lock_linear_z = true
+axis_lock_angular_x = true
+axis_lock_angular_z = true
+mass = 36.2
+center_of_mass_mode = 1
+script = ExtResource("1_sco2b")
+push_force = 6.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="door2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 0)
+mesh = SubResource("BoxMesh_avhc6")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="door2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 0)
+shape = SubResource("BoxShape3D_0xt32")

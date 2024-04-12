@@ -1,0 +1,10 @@
+[gd_resource type="Shortcut" load_steps=2 format=3 uid="uid://bt550x3pibncu"]
+
+[sub_resource type="InputEventKey" id="InputEventKey_y18a5"]
+alt_pressed = true
+shift_pressed = true
+pressed = true
+keycode = 70
+
+[resource]
+events = [SubResource("InputEventKey_y18a5")]

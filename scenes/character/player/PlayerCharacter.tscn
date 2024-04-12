@@ -1,0 +1,75 @@
+[gd_scene load_steps=13 format=3 uid="uid://bfhmgvbappjwk"]
+
+[ext_resource type="Script" path="res://scenes/character/player/PlayerCharacter.gd" id="1_5xov2"]
+[ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3D.gd" id="1_jwvll"]
+[ext_resource type="Script" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="2_dkfjj"]
+[ext_resource type="Script" path="res://addons/gloot/core/inventory_grid_stacked.gd" id="3_7p75s"]
+[ext_resource type="Resource" uid="uid://bmyfbjr5n05ky" path="res://resources/items.tres" id="4_m8w5t"]
+[ext_resource type="Script" path="res://scenes/character/player/InteractionRay.gd" id="4_qww6o"]
+[ext_resource type="Script" path="res://scripts/fsm/StateMachine.gd" id="5_0ve46"]
+[ext_resource type="Script" path="res://scenes/character/player/StateWalking.gd" id="6_gp8o1"]
+[ext_resource type="Script" path="res://scenes/character/player/StateLook.gd" id="7_lhieq"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_6b6tn"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lve4t"]
+
+[sub_resource type="Resource" id="Resource_5xdpo"]
+script = ExtResource("2_dkfjj")
+duration = 1.0
+transition = 0
+ease = 2
+
+[node name="PlayerCharacter" type="CharacterBody3D" groups=["player"]]
+script = ExtResource("1_5xov2")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_6b6tn")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_lve4t")
+
+[node name="PhantomCamera3D" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.782647, 0)
+script = ExtResource("1_jwvll")
+priority_override = false
+priority = 1
+follow_mode = 0
+look_at_mode = 0
+tween_parameters = SubResource("Resource_5xdpo")
+tween_on_load = false
+inactive_update_mode = 0
+camera_3D_resource = null
+
+[node name="InteractionRay" type="RayCast3D" parent="PhantomCamera3D"]
+target_position = Vector3(0, 0, -2)
+script = ExtResource("4_qww6o")
+
+[node name="InventoryGridStacked" type="Node" parent="."]
+script = ExtResource("3_7p75s")
+size = Vector2i(8, 4)
+item_protoset = ExtResource("4_m8w5t")
+
+[node name="MotionMachine" type="Node" parent="." node_paths=PackedStringArray("default_state")]
+script = ExtResource("5_0ve46")
+default_state = NodePath("StateWalking")
+
+[node name="StateWalking" type="Node" parent="MotionMachine" node_paths=PackedStringArray("actor", "step_ray", "interact_ray")]
+script = ExtResource("6_gp8o1")
+actor = NodePath("../..")
+step_ray = NodePath("../../RayCast3D")
+interact_ray = NodePath("../../PhantomCamera3D/InteractionRay")
+
+[node name="CameraMachine" type="Node" parent="." node_paths=PackedStringArray("default_state")]
+script = ExtResource("5_0ve46")
+default_state = NodePath("StateLook")
+
+[node name="StateLook" type="Node" parent="CameraMachine" node_paths=PackedStringArray("cam", "actor")]
+script = ExtResource("7_lhieq")
+cam = NodePath("../../PhantomCamera3D")
+actor = NodePath("../..")
+
+[node name="RayCast3D" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.75)
+
+[connection signal="interact_changed" from="PhantomCamera3D/InteractionRay" to="MotionMachine/StateWalking" method="_on_interaction_ray_interact_changed"]
