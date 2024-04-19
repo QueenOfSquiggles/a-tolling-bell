@@ -17,7 +17,7 @@ func do_interact() -> void:
 		current.node.interact()
 
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	var colliding = is_colliding()
 	var flag = colliding != last_is_colliding
 	if colliding and current:

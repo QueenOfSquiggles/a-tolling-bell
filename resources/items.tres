@@ -6,6 +6,22 @@
 script = ExtResource("1_4if1v")
 json_data = "[
     {
-        \"id\": \"test_item\"
+        \"height\": \"1\",
+        \"id\": \"test_item\",
+        \"image\": \"res://icon.png\",
+        \"width\": \"2\"
+    },
+    {
+        \"height\": \"1\",
+        \"id\": \"key\",
+        \"image\": \"res://resources/external/kenney_generic_items/genericItem_color_154.png\",
+        \"width\": \"1\"
+    },
+
+    {
+        \"height\": \"2\",
+        \"id\": \"planks\",
+        \"image\": \"res://resources/external/kenney_survival_kit/Previews/resource-planks.png\",
+        \"width\": \"2\"
     }
 ]"

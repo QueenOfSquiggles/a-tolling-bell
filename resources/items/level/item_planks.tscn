@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://4o7vjbbmeunr"]
+
+[ext_resource type="Script" path="res://resources/items/level/item_planks.gd" id="1_dhh7w"]
+[ext_resource type="PackedScene" uid="uid://drprt6do32e5x" path="res://resources/external/kenney_survival_kit/Models/GLB format/resource-planks.glb" id="1_jbvbq"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_mc7jj"]
+size = Vector3(0.447266, 0.132324, 0.681885)
+
+[node name="ItemPlanks" type="StaticBody3D"]
+script = ExtResource("1_dhh7w")
+item_id = "planks"
+
+[node name="resource-planks2" parent="." instance=ExtResource("1_jbvbq")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0544434, 0)
+shape = SubResource("BoxShape3D_mc7jj")

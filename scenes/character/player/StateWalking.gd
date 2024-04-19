@@ -11,6 +11,8 @@ const GRAVITY := -9.8
 
 var can_interact := false
 
+signal do_crouch
+
 
 func enter_state() -> void:
 	super.enter_state()
@@ -34,8 +36,11 @@ func tick(delta: float) -> void:
 	actor.velocity = actor.velocity.lerp(target_velocity, acceleration * delta)
 	actor.move_and_slide()
 
+	# TODO: refactor to common handler (HFSM??)
 	if Input.is_action_just_pressed("interact") and can_interact:
 		interact_ray.do_interact()
+	if Input.is_action_just_pressed("crouch"):
+		do_crouch.emit()
 
 
 func stairs_check(forwards_intent: bool) -> Vector3:
@@ -54,6 +59,6 @@ func do_gravity() -> Vector3:
 	return Vector3()
 
 
-func _on_interaction_ray_interact_changed(name: String, node: Node3D) -> void:
-	print("Interaction: " + name)
+func _on_interaction_ray_interact_changed(n: String, node: Node3D) -> void:
+	print("Interaction: " + n)
 	can_interact = node != null
