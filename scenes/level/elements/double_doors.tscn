@@ -17,6 +17,7 @@ size = Vector3(0.9, 2, 0.1)
 
 [node name="door" type="RigidBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 0)
+collision_layer = 3
 input_ray_pickable = false
 axis_lock_linear_x = true
 axis_lock_linear_y = true
@@ -39,6 +40,7 @@ shape = SubResource("BoxShape3D_0xt32")
 
 [node name="door2" type="RigidBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0)
+collision_layer = 3
 input_ray_pickable = false
 axis_lock_linear_x = true
 axis_lock_linear_y = true

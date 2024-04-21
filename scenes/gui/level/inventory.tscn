@@ -1,11 +1,10 @@
 [gd_scene load_steps=5 format=3 uid="uid://oo0udx3q5y3v"]
 
 [ext_resource type="Script" path="res://scenes/gui/level/inventory_gui.gd" id="1_2jdol"]
-[ext_resource type="Script" path="res://addons/gloot/ui/ctrl_inventory_grid_ex.gd" id="1_tapu5"]
-[ext_resource type="StyleBox" uid="uid://dad63su1h11i3" path="res://resources/gui/inventory_slot.tres" id="3_mfaxg"]
+[ext_resource type="Script" path="res://scenes/gui/level/InventoryDataElements.gd" id="2_hkiub"]
+[ext_resource type="Script" path="res://addons/gloot/ui/ctrl_inventory_grid.gd" id="3_p0ola"]
 
-[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_h4ji1"]
-size = Vector2(32, 32)
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_qqabf"]
 
 [node name="Inventory" type="Control"]
 process_mode = 3
@@ -41,33 +40,34 @@ theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/CenterContainer/PanelContainer/MarginContainer"]
+[node name="DataElements" type="VBoxContainer" parent="HBoxContainer/CenterContainer/PanelContainer/MarginContainer"]
 layout_mode = 2
+script = ExtResource("2_hkiub")
 
-[node name="Label" type="Label" parent="HBoxContainer/CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
-layout_mode = 2
-text = "Something or other"
-
-[node name="Label2" type="Label" parent="HBoxContainer/CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="LabelName" type="Label" parent="HBoxContainer/CenterContainer/PanelContainer/MarginContainer/DataElements"]
 layout_mode = 2
 text = "Something or other"
 
-[node name="HSeparator" type="HSeparator" parent="HBoxContainer/CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="LabelDescription" type="Label" parent="HBoxContainer/CenterContainer/PanelContainer/MarginContainer/DataElements"]
+layout_mode = 2
+text = "Something or other"
+
+[node name="HSeparator" type="HSeparator" parent="HBoxContainer/CenterContainer/PanelContainer/MarginContainer/DataElements"]
 layout_mode = 2
 
-[node name="Button" type="Button" parent="HBoxContainer/CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
-layout_mode = 2
-text = "Action 1"
-
-[node name="Button2" type="Button" parent="HBoxContainer/CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
-layout_mode = 2
-text = "Action 1"
-
-[node name="Button3" type="Button" parent="HBoxContainer/CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="Button" type="Button" parent="HBoxContainer/CenterContainer/PanelContainer/MarginContainer/DataElements"]
 layout_mode = 2
 text = "Action 1"
 
-[node name="Button4" type="Button" parent="HBoxContainer/CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="Button2" type="Button" parent="HBoxContainer/CenterContainer/PanelContainer/MarginContainer/DataElements"]
+layout_mode = 2
+text = "Action 1"
+
+[node name="Button3" type="Button" parent="HBoxContainer/CenterContainer/PanelContainer/MarginContainer/DataElements"]
+layout_mode = 2
+text = "Action 1"
+
+[node name="Button4" type="Button" parent="HBoxContainer/CenterContainer/PanelContainer/MarginContainer/DataElements"]
 layout_mode = 2
 text = "Action 1"
 
@@ -82,7 +82,8 @@ layout_mode = 2
 [node name="InventoryGuiDisplay" type="Control" parent="HBoxContainer/CenterContainer2/PanelContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-script = ExtResource("1_tapu5")
-default_item_texture = SubResource("PlaceholderTexture2D_h4ji1")
+script = ExtResource("3_p0ola")
+default_item_texture = SubResource("PlaceholderTexture2D_qqabf")
 field_dimensions = Vector2(48, 48)
-field_style = ExtResource("3_mfaxg")
+draw_selections = true
+selection_color = Color(0.356863, 0.815686, 0.921569, 1)

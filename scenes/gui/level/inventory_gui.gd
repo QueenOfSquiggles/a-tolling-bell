@@ -1,6 +1,6 @@
 extends Control
 
-@onready var inv_display: CtrlInventoryGridEx = $"%InventoryGuiDisplay"
+@onready var inv_display := %InventoryGuiDisplay
 
 
 func _ready() -> void:

@@ -5,7 +5,7 @@ extends FiniteState
 @export var actor: CharacterBody3D
 @export var speed := 5.0
 @export var acceleration := 3.0
-@export var interact_ray: RayCast3D
+@onready var interact_area := $"../../PhantomCamera3D/InteractionArea"
 const GRAVITY := -9.8
 
 var can_interact := false
@@ -37,7 +37,7 @@ func tick(delta: float) -> void:
 	actor.move_and_slide()
 
 	if Input.is_action_just_pressed("interact") and can_interact:
-		interact_ray.do_interact()
+		interact_area.do_interact()
 	if not ceiling_ray.is_colliding() and Input.is_action_just_pressed("crouch"):
 		stop_crouch.emit()
 
@@ -46,3 +46,7 @@ func do_gravity() -> Vector3:
 	if not actor.is_on_floor():
 		return Vector3(0, GRAVITY, 0)
 	return Vector3()
+
+
+func _on_interaction_area_interact_changed(name: String, node: Node3D) -> void:
+	can_interact = not node == null

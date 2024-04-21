@@ -6,7 +6,7 @@ extends FiniteState
 @export var step_ray: RayCast3D
 @export var step_height := 0.3
 @export var step_force := 1.2
-@export var interact_ray: RayCast3D
+@onready var interact_area := $"../../PhantomCamera3D/InteractionArea"
 const GRAVITY := -9.8
 
 var can_interact := false
@@ -38,7 +38,7 @@ func tick(delta: float) -> void:
 
 	# TODO: refactor to common handler (HFSM??)
 	if Input.is_action_just_pressed("interact") and can_interact:
-		interact_ray.do_interact()
+		interact_area.do_interact()
 	if Input.is_action_just_pressed("crouch"):
 		do_crouch.emit()
 
@@ -60,5 +60,4 @@ func do_gravity() -> Vector3:
 
 
 func _on_interaction_ray_interact_changed(n: String, node: Node3D) -> void:
-	print("Interaction: " + n)
 	can_interact = node != null
