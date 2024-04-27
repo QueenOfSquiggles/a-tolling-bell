@@ -1,9 +1,11 @@
-[gd_scene load_steps=67 format=3 uid="uid://4xddoi7b5j7d"]
+[gd_scene load_steps=71 format=3 uid="uid://4xddoi7b5j7d"]
 
 [ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="1_fjxt6"]
-[ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3D.gd" id="2_ep1fl"]
+[ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="2_ep1fl"]
 [ext_resource type="Script" path="res://addons/cyclops_level_builder/nodes/cyclops_block.gd" id="3_2lh6w"]
 [ext_resource type="PackedScene" uid="uid://bfhmgvbappjwk" path="res://scenes/character/player/PlayerCharacter.tscn" id="3_o52r3"]
+[ext_resource type="Script" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="3_w7iwl"]
+[ext_resource type="Script" path="res://addons/phantom_camera/scripts/resources/camera_3d_resource.gd" id="4_g6358"]
 [ext_resource type="Script" path="res://addons/cyclops_level_builder/resources/convex_block_data.gd" id="4_vf7ve"]
 [ext_resource type="Script" path="res://test_interact.gd" id="6_grsnh"]
 [ext_resource type="PackedScene" uid="uid://bhgy8fnjnkrhu" path="res://scenes/level/elements/double_doors.tscn" id="7_5ycef"]
@@ -23,6 +25,19 @@ ssao_enabled = true
 ssil_enabled = true
 sdfgi_enabled = true
 glow_enabled = true
+
+[sub_resource type="Resource" id="Resource_h4d18"]
+script = ExtResource("3_w7iwl")
+duration = 1.0
+transition = 0
+ease = 2
+
+[sub_resource type="Resource" id="Resource_foiq8"]
+script = ExtResource("4_g6358")
+cull_mask = 1048575
+h_offset = 0.0
+v_offset = 0.0
+fov = 75.0
 
 [sub_resource type="Resource" id="Resource_eaoi6"]
 script = ExtResource("4_vf7ve")
@@ -1294,14 +1309,8 @@ environment = SubResource("Environment_u6wfr")
 
 [node name="Absolute Fallback Camera" type="Node3D" parent="."]
 script = ExtResource("2_ep1fl")
-priority_override = false
-priority = 0
-follow_mode = 0
-look_at_mode = 0
-tween_parameters = null
-tween_on_load = true
-inactive_update_mode = 0
-camera_3D_resource = null
+tween_resource = SubResource("Resource_h4d18")
+camera_3d_resource = SubResource("Resource_foiq8")
 
 [node name="PlayerCharacter" parent="." instance=ExtResource("3_o52r3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)

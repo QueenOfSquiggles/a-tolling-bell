@@ -1,6 +1,7 @@
 extends Node
 
 const STEAM_TESTING_APP_ID: int = 480
+const FILE_PATH_SAVE_SLOTS: String = "user://slots"
 
 
 class SteamData:
@@ -12,12 +13,17 @@ class SteamData:
 	var client_name: String
 
 
+signal serialize
+signal deserialize
+
 var steam_data: SteamData = SteamData.new()
+var slot_path: String = ""
 var _player: PlayerCharacter
 
 
 func _ready() -> void:
 	_init_steam()
+	open_slot("default")
 
 
 func _process(_delta: float) -> void:
@@ -91,3 +97,28 @@ func _handle_steam_init_error(err_code: int, message: String) -> bool:
 		)
 	)
 	return false
+
+
+## Opens a slot for global use. Returns true if the slot was empty
+func open_slot(slot_name: String) -> bool:
+	slot_path = FILE_PATH_SAVE_SLOTS.path_join(slot_name)
+	var abs_path = ProjectSettings.globalize_path(slot_path)
+	if DirAccess.dir_exists_absolute(abs_path):
+		return false
+	DirAccess.make_dir_recursive_absolute(abs_path)
+	return true
+
+
+func get_available_slots() -> PackedStringArray:
+	var dir = DirAccess.open(FILE_PATH_SAVE_SLOTS)
+	if not dir:
+		return []
+	return dir.get_directories()
+
+
+func trigger_serialize() -> void:
+	serialize.emit()
+
+
+func trigger_deserialize() -> void:
+	deserialize.emit()

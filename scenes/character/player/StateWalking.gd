@@ -6,7 +6,7 @@ extends FiniteState
 @export var step_ray: RayCast3D
 @export var step_height := 0.3
 @export var step_force := 1.2
-@onready var interact_area := $"../../PhantomCamera3D/InteractionArea"
+@export var interact_area: PlayerInteractionArea
 const GRAVITY := -9.8
 
 var can_interact := false
@@ -59,5 +59,5 @@ func do_gravity() -> Vector3:
 	return Vector3()
 
 
-func _on_interaction_ray_interact_changed(n: String, node: Node3D) -> void:
+func _on_interaction_ray_interact_changed(_n: String, node: Node3D) -> void:
 	can_interact = node != null

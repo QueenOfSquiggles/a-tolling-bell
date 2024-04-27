@@ -5,7 +5,7 @@ extends FiniteState
 @export var actor: CharacterBody3D
 @export var speed := 5.0
 @export var acceleration := 3.0
-@onready var interact_area := $"../../PhantomCamera3D/InteractionArea"
+@export var interact_area: PlayerInteractionArea
 const GRAVITY := -9.8
 
 var can_interact := false
@@ -48,5 +48,5 @@ func do_gravity() -> Vector3:
 	return Vector3()
 
 
-func _on_interaction_area_interact_changed(name: String, node: Node3D) -> void:
+func _on_interaction_area_interact_changed(_name: String, node: Node3D) -> void:
 	can_interact = not node == null

@@ -1,4 +1,5 @@
 extends Area3D
+class_name PlayerInteractionArea
 
 signal interact_changed(name: String, node: Node3D)
 
@@ -6,6 +7,7 @@ signal interact_changed(name: String, node: Node3D)
 class IData:
 	var text: String = ""
 	var node: Node3D
+	var component: InteractionComponent
 
 	func _to_string() -> String:
 		var n := "NULL"
@@ -14,50 +16,84 @@ class IData:
 		return "[%s] : %s" % [n, text]
 
 
+@export var target_camera: PhantomCamera3D
+@export var icon_scene: PackedScene
+
 var current: IData = null
 var last_is_colliding := false
-var coll_stack: Array[IData]
+var coll_arr: Array[IData]
+
+var last_best_dot_product: float = 0.0
 
 
 func do_interact() -> void:
-	if current and current.node:
+	if current and is_instance_valid(current.node):
 		current.node.interact()
 
 
+func _physics_process(_delta: float) -> void:
+	_update_interact()
+
+
 func _on_body_entered(body: Node3D) -> void:
-	if not "interact" in body:
-		print("Area Interact: Rejecting body :: %s" % body.name)
+	var interaction := (
+		Components.get_component(body, "InteractionComponent") as InteractionComponent
+	)
+	if not interaction:
 		return
 	var data := IData.new()
 	data.node = body
-	if "get_interaction_text" in body:
-		data.text = body.get_interaction_text()
-	coll_stack.push_front(data)
+	data.component = interaction
+	data.text = interaction.text_prompt
+	coll_arr.append(data)
+	_create_object_icon(data)
 	_update_interact()
 
 
 func _on_body_exited(body: Node3D) -> void:
-	if not "interact" in body:
+	var interaction := (
+		Components.get_component(body, "InteractionComponent") as InteractionComponent
+	)
+	if not interaction:
 		return
-	# cheating by not treating it as a stack here :)
+	var icon := find_child(str(body.name))
+	if icon:
+		icon.queue_free()
 	var target: int = -1
-	for i in range(coll_stack.size()):
-		if coll_stack[i].node == body:
+	for i in range(coll_arr.size()):
+		if coll_arr[i].node == body:
 			target = i
 			break
 	if target >= 0:
-		coll_stack.remove_at(target)
+		coll_arr.remove_at(target)
 	_update_interact()
+
+
+func _create_object_icon(target: IData) -> void:
+	if not target or not target.node or find_child(str(target.node.name)):
+		return
+	var icon := icon_scene.instantiate() as Node3D
+	icon.name = target.node.name
+	add_child(icon)
+	icon.owner = self
+	icon.top_level = true
+	icon.global_position = target.node.global_position
 
 
 func _update_interact() -> void:
 	var front: IData = null
-	if not coll_stack.is_empty():
-		front = coll_stack.front()
+	var best_delta := 0.0
+	var cam_vector = -target_camera.global_basis.z.normalized()
+	for i in coll_arr:
+		var normalized_dir := (i.node.global_position - global_position).normalized()
+		var d := cam_vector.dot(normalized_dir)
+		if d > best_delta:
+			best_delta = d
+			front = i
+	last_best_dot_product = best_delta
 	if front == current:
 		return
 	current = front
-	print("Area Interact: %s" % str(current))
 	if current:
 		interact_changed.emit(current.text, current.node)
 	else:
