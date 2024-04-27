@@ -1,0 +1,108 @@
+[gd_scene load_steps=12 format=3 uid="uid://3lnlcuwjcxlf"]
+
+[ext_resource type="PackedScene" uid="uid://dhcvlltgvg15f" path="res://resources/external/kenney_survival_kit/Models/GLB format/barrel-open.glb" id="1_umojs"]
+[ext_resource type="Script" path="res://scenes/level/elements/special_interaction_object.gd" id="1_vk686"]
+[ext_resource type="PackedScene" uid="uid://du4318vxo8gq8" path="res://resources/external/kenney_survival_kit/Models/GLB format/fish.glb" id="2_fl8ln"]
+[ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="3_ecmov"]
+[ext_resource type="Script" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="4_vwl26"]
+[ext_resource type="Script" path="res://scripts/interaction/interaction_component.gd" id="7_2eqwa"]
+
+[sub_resource type="Resource" id="Resource_87dhh"]
+script = ExtResource("4_vwl26")
+duration = 1.0
+transition = 0
+ease = 2
+
+[sub_resource type="Animation" id="Animation_q81cu"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PhantomCamera3D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0.420539, 0.342421)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PhantomCamera3D:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_didx5"]
+resource_name = "initialize"
+length = 3.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PhantomCamera3D:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0.420539, 0.342421), Vector3(0, 0.518392, 0.124437)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PhantomCamera3D:rotation")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(-0.889734, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_f6eys"]
+_data = {
+"RESET": SubResource("Animation_q81cu"),
+"initialize": SubResource("Animation_didx5")
+}
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_jq4ea"]
+height = 0.352218
+radius = 0.120124
+
+[node name="SpecialInteractionObject" type="StaticBody3D"]
+process_mode = 3
+collision_layer = 3
+script = ExtResource("1_vk686")
+
+[node name="barrel-open2" parent="." instance=ExtResource("1_umojs")]
+
+[node name="fish2" parent="barrel-open2" instance=ExtResource("2_fl8ln")]
+transform = Transform3D(0.585043, -0.265171, -0.0640537, 0, 0.15157, -0.627472, 0.272798, 0.568687, 0.13737, 0, 0.220293, 0)
+
+[node name="PhantomCamera3D" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.420539, 0.342421)
+script = ExtResource("3_ecmov")
+tween_resource = SubResource("Resource_87dhh")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_f6eys")
+}
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.171672, 0)
+shape = SubResource("CylinderShape3D_jq4ea")
+
+[node name="InteractionComponent" type="Node" parent="."]
+script = ExtResource("7_2eqwa")
+
+[connection signal="on_interacted_with" from="InteractionComponent" to="." method="_on_interaction_component_on_interacted_with"]

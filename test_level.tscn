@@ -1,4 +1,4 @@
-[gd_scene load_steps=71 format=3 uid="uid://4xddoi7b5j7d"]
+[gd_scene load_steps=73 format=3 uid="uid://4xddoi7b5j7d"]
 
 [ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="1_fjxt6"]
 [ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="2_ep1fl"]
@@ -11,6 +11,8 @@
 [ext_resource type="PackedScene" uid="uid://bhgy8fnjnkrhu" path="res://scenes/level/elements/double_doors.tscn" id="7_5ycef"]
 [ext_resource type="VoxelGIData" uid="uid://xhpjiawlyyxr" path="res://scenes/level/data/test_level.VoxelGI_data.res" id="8_kpw58"]
 [ext_resource type="PackedScene" uid="uid://4o7vjbbmeunr" path="res://resources/items/level/item_planks.tscn" id="9_pg6p3"]
+[ext_resource type="Script" path="res://scripts/interaction/interaction_component.gd" id="9_yxjc8"]
+[ext_resource type="PackedScene" uid="uid://3lnlcuwjcxlf" path="res://scenes/level/elements/special_interaction_object.tscn" id="13_813b4"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_cclo1"]
 
@@ -1298,6 +1300,7 @@ transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -
 shadow_enabled = true
 
 [node name="Camera3D" type="Camera3D" parent="."]
+process_mode = 3
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.78265, 0)
 current = true
 
@@ -1593,6 +1596,9 @@ mesh = SubResource("BoxMesh_sxd3t")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Test Interact"]
 shape = SubResource("BoxShape3D_y1nkq")
 
+[node name="InteractionComponent" type="Node" parent="Test Interact"]
+script = ExtResource("9_yxjc8")
+
 [node name="DoubleDoors" parent="." instance=ExtResource("7_5ycef")]
 transform = Transform3D(0.499894, 0, 0.866086, 0, 1, 0, -0.866086, 0, 0.499894, 7.00373, 2.01587, -0.693207)
 
@@ -1606,3 +1612,8 @@ data = ExtResource("8_kpw58")
 
 [node name="ItemPlanks" parent="." instance=ExtResource("9_pg6p3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.61659, 1.01172, -4.24718)
+
+[node name="SpecialInteractionObject" parent="." instance=ExtResource("13_813b4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.82571, 1, -0.210823)
+
+[connection signal="on_interacted_with" from="Test Interact/InteractionComponent" to="Test Interact" method="interact"]

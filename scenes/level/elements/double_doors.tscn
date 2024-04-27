@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://bhgy8fnjnkrhu"]
+[gd_scene load_steps=6 format=3 uid="uid://bhgy8fnjnkrhu"]
 
 [ext_resource type="Script" path="res://scenes/level/elements/door.gd" id="1_sco2b"]
+[ext_resource type="Script" path="res://scripts/interaction/interaction_component.gd" id="2_7e3xc"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rkvts"]
 albedo_color = Color(0.556863, 0.556863, 0.556863, 1)
@@ -38,6 +39,9 @@ mesh = SubResource("BoxMesh_avhc6")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0)
 shape = SubResource("BoxShape3D_0xt32")
 
+[node name="InteractionComponent" type="Node" parent="door"]
+script = ExtResource("2_7e3xc")
+
 [node name="door2" type="RigidBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0)
 collision_layer = 3
@@ -60,3 +64,9 @@ mesh = SubResource("BoxMesh_avhc6")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="door2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 0)
 shape = SubResource("BoxShape3D_0xt32")
+
+[node name="InteractionComponent" type="Node" parent="door2"]
+script = ExtResource("2_7e3xc")
+
+[connection signal="on_interacted_with" from="door/InteractionComponent" to="door" method="interact"]
+[connection signal="on_interacted_with" from="door2/InteractionComponent" to="door2" method="interact"]

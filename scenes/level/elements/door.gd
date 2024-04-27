@@ -9,4 +9,3 @@ func interact() -> void:
 	var dir = (mesh.global_position - player.global_position).normalized()
 	var offset = mesh.global_position - global_position
 	apply_impulse(dir * push_force, offset)
-	print("Pushing door: %s" % str(dir))
