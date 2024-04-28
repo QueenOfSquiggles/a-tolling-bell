@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://d1ldgl6d3swg0"]
+
+[ext_resource type="Script" path="res://scenes/level/elements/proper_re_7_door.gd" id="1_3aglo"]
+[ext_resource type="Script" path="res://scripts/interaction/interaction_component.gd" id="1_3sbv3"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_hhpq1"]
+size = Vector3(1, 2, 0.03)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_r13qc"]
+points = PackedVector3Array(0.531746, 1.01587, 0.0326066, -0.515873, -1.01587, -0.0308606, -0.515873, -1.01587, 0.0326066, -0.515873, 1.01587, -0.0308606, 0.531746, -1.01587, -0.0308606, 0.531746, -1.01587, 0.0326066, -0.515873, 1.01587, 0.0326066, 0.531746, 1.01587, -0.0308606)
+
+[node name="ProperRE7Door" type="Node3D"]
+script = ExtResource("1_3aglo")
+
+[node name="Node3D" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0)
+
+[node name="Door" type="StaticBody3D" parent="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 0)
+collision_layer = 3
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Node3D/Door"]
+mesh = SubResource("BoxMesh_hhpq1")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Node3D/Door"]
+shape = SubResource("ConvexPolygonShape3D_r13qc")
+
+[node name="InteractionComponent" type="Node" parent="Node3D/Door"]
+script = ExtResource("1_3sbv3")
+
+[connection signal="on_interacted_with" from="Node3D/Door/InteractionComponent" to="." method="_on_interaction_component_on_interacted_with"]

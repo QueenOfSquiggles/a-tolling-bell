@@ -1,10 +1,11 @@
-[gd_scene load_steps=12 format=3 uid="uid://3lnlcuwjcxlf"]
+[gd_scene load_steps=14 format=3 uid="uid://3lnlcuwjcxlf"]
 
 [ext_resource type="PackedScene" uid="uid://dhcvlltgvg15f" path="res://resources/external/kenney_survival_kit/Models/GLB format/barrel-open.glb" id="1_umojs"]
 [ext_resource type="Script" path="res://scenes/level/elements/special_interaction_object.gd" id="1_vk686"]
 [ext_resource type="PackedScene" uid="uid://du4318vxo8gq8" path="res://resources/external/kenney_survival_kit/Models/GLB format/fish.glb" id="2_fl8ln"]
 [ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="3_ecmov"]
 [ext_resource type="Script" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="4_vwl26"]
+[ext_resource type="Script" path="res://addons/phantom_camera/scripts/resources/camera_3d_resource.gd" id="6_hlokw"]
 [ext_resource type="Script" path="res://scripts/interaction/interaction_component.gd" id="7_2eqwa"]
 
 [sub_resource type="Resource" id="Resource_87dhh"]
@@ -12,6 +13,13 @@ script = ExtResource("4_vwl26")
 duration = 1.0
 transition = 0
 ease = 2
+
+[sub_resource type="Resource" id="Resource_jsadq"]
+script = ExtResource("6_hlokw")
+cull_mask = 1048575
+h_offset = 0.0
+v_offset = 0.0
+fov = 75.0
 
 [sub_resource type="Animation" id="Animation_q81cu"]
 length = 0.001
@@ -92,6 +100,7 @@ transform = Transform3D(0.585043, -0.265171, -0.0640537, 0, 0.15157, -0.627472, 
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.420539, 0.342421)
 script = ExtResource("3_ecmov")
 tween_resource = SubResource("Resource_87dhh")
+camera_3d_resource = SubResource("Resource_jsadq")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
